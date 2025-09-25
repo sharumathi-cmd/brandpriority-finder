@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Search Results (INR)</title>
+<style>
+    body { font-family: Arial, sans-serif; margin: 0; background: #f4f4f4; }
+    header { background: #222; color: #fff; padding: 1em; text-align: center; }
+    main { max-width: 900px; margin: 2em auto; padding: 1em; background: #fff; border-radius: 8px; }
+    .results-header { margin-bottom: 1em; }
+    .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 1em; }
+    .card {
+        background: #fafafa; padding: 1em;
+        border-radius: 8px; text-align: center;
+        box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    }
+    .card img { max-width: 100%; height: auto; border-radius: 6px; }
+    .badge {
+        display: inline-block; padding: 0.2em 0.6em;
+        border-radius: 4px; font-size: 0.8em; margin-top: 0.4em;
+    }
+    .premium { background: #0078d4; color: white; }
+    .affordable { background: #28a745; color: white; }
+    .no-results { text-align: center; padding: 2em; }
+</style>
+</head>
+<body>
+<header>
+    <h1>Search Results</h1>
+    <nav>
+        <a href="index mod.html" style="color:white; margin-right:10px;">Home</a>
+        <a href="search.html" style="color:white; margin-right:10px;">New Search</a>
+    </nav>
+</header>
+
+<main>
+    <div class="results-header" id="resultsHeader"></div>
+    <div class="grid" id="resultsGrid"></div>
+    <div class="no-results" id="noResults" style="display:none;">
+        <p>No matching products found.</p>
+        <p><a href="search.html">Try another search</a></p>
+    </div>
+</main>
+
+<script>
+// Latest shoe catalog with prices converted to INR and real product images from official sources
+const shoeCatalog = [
+    {
+        name: "Nike Air Zoom Pegasus",
+        brand: "Nike",
+        price: 10520,
+        category: "Premium",
+        img: "peg.avif"
+    },
+    {
+        name: "Nike Revolution 5",
+        brand: "Nike",
+        price: 5700,
+        category: "Affordable",
+        img: "W+NIKE+REVOLUTION+7 (1).avif"
+    },
+    {
+        name: "Reebok Nano X1",
+        brand: "Reebok",
+        price: 11400,
+        category: "Premium",
+        img: "rebook nano.webp"
+    },
+    {
+        name: "Reebok Royal Classic",
+        brand: "Reebok",
+        price: 5260,
+        category: "Affordable",
+        img: "rebook roayal classic.webp"
+    },
+    {
+        name: "Nike Court Vision",
+        brand: "Nike",
+        price: 6580,
+        category: "Affordable",
+        img: "NIKE+COURT+VISION+LO.avif"
+    },
+    {
+        name: "Reebok Floatride Run",
+        brand: "Reebok",
+        price: 10090,
+        category: "Premium",
+        img: "rebook last.webp"
+    }
+];
+
+// Get search query from URL
+const params = new URLSearchParams(window.location.search);
+const query = params.get('query') ? params.get('query').toLowerCase() : "";
+
+// Display search term
+document.getElementById('resultsHeader').innerHTML = query ?
+    `<h2>Showing results for "<em>${query}</em>"</h2>` :
+    "<h2>All Products</h2>";
+
+// Filter products by query keywords
+let results;
+if (["affordable","budget","cheap"].some(word => query.includes(word))) {
+    results = shoeCatalog.filter(p => p.category.toLowerCase() === "affordable");
+} else if (["premium","expensive","high"].some(word => query.includes(word))) {
+    results = shoeCatalog.filter(p => p.category.toLowerCase() === "premium");
+} else if (["shoes","all"].some(word => query.includes(word))) {
+    results = shoeCatalog;
+} else if (query) {
+    results = shoeCatalog.filter(p =>
+        p.name.toLowerCase().includes(query) ||
+        p.brand.toLowerCase().includes(query)
+    );
+} else {
+    results = shoeCatalog;
+}
+
+// Render results
+if(results.length > 0) {
+    const grid = document.getElementById('resultsGrid');
+    results.forEach(prod => {
+        const card = document.createElement('div');
+        card.className = "card";
+        card.innerHTML = `
+            <img src="${prod.img}" alt="${prod.name}">
+            <h3>${prod.name}</h3>
+            <p>${prod.brand}</p>
+            <p>₹${prod.price.toLocaleString('en-IN')}</p>
+            <span class="badge ${prod.category.toLowerCase()}">${prod.category}</span>
+        `;
+        grid.appendChild(card);
+    });
+} else {
+    document.getElementById('noResults').style.display = "block";
+}
+</script>
+</body>
+</html>

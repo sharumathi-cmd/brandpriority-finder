@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Search Products</title>
+<style>
+    body {
+        font-family: Arial, sans-serif;
+        margin: 0; padding: 0;
+        background: #f4f4f4;
+    }
+    header {
+        background: #222; color: #fff; padding: 1em; text-align: center;
+    }
+    main {
+        max-width: 600px; margin: 2em auto;
+        padding: 1em; background: white; border-radius: 8px;
+        box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    }
+    form {
+        display: flex; gap: 0.5em;
+    }
+    input[type="text"] {
+        flex: 1; padding: 0.8em;
+        border: 1px solid #ccc; border-radius: 4px;
+        font-size: 1em;
+    }
+    button {
+        padding: 0.8em 1.2em;
+        border: none; border-radius: 4px;
+        background: #0078d4; color: white;
+        font-size: 1em; cursor: pointer;
+    }
+    .quick-search {
+        margin-top: 1em;
+    }
+    .quick-search button {
+        margin: 0.2em;
+        background: #555;
+    }
+</style>
+</head>
+<body>
+<header>
+    <h1>Search Products</h1>
+    <nav>
+        <a href="index mod.html" style="color:white; margin-right:10px;">Home</a>
+        <a href="nike.html" style="color:white; margin-right:10px;">Nike</a>
+        <a href="reebok.html" style="color:white; margin-right:10px;">Reebok</a>
+        <a href="login mod.html" style="color:white;">Login</a>
+    </nav>
+</header>
+
+<main>
+    <form id="searchForm">
+        <input type="text" id="searchInput" placeholder="Search by brand, category, or type..." required />
+        <button type="submit">Search</button>
+    </form>
+
+    <div class="quick-search">
+        <p>Quick Search:</p>
+        <button type="button" onclick="quickSearch('Nike')">Nike</button>
+        <button type="button" onclick="quickSearch('Reebok')">Reebok</button>
+        <button type="button" onclick="quickSearch('Affordable')">Affordable</button>
+        <button type="button" onclick="quickSearch('Premium')">Premium</button>
+        <button type="button" onclick="quickSearch('Shoes')">All Shoes</button>
+    </div>
+</main>
+
+<script>
+function quickSearch(term) {
+    window.location.href = `searching items.html?query=${encodeURIComponent(term)}`;
+}
+document.getElementById('searchForm').addEventListener('submit', function(e) {
+    e.preventDefault();
+    const q = document.getElementById('searchInput').value.trim();
+    if(q) window.location.href = `searching items.html?query=${encodeURIComponent(q)}`;
+});
+</script>
+</body>
+</html>
